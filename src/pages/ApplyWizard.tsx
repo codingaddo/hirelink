@@ -322,7 +322,13 @@ export function ApplyWizard() {
                     />
                     {form1.formState.errors.candidateName && (
                       <p className="text-xs text-destructive">
-                        {(form1.formState.errors.candidateName as any).message}
+                        {
+                          (
+                            form1.formState.errors.candidateName as {
+                              message?: string;
+                            }
+                          )?.message
+                        }
                       </p>
                     )}
                   </div>
@@ -336,7 +342,10 @@ export function ApplyWizard() {
                     />
                     {form1.formState.errors.email && (
                       <p className="text-xs text-destructive">
-                        {(form1.formState.errors.email as any).message}
+                        {
+                          (form1.formState.errors.email as { message?: string })
+                            ?.message
+                        }
                       </p>
                     )}
                   </div>
@@ -349,7 +358,10 @@ export function ApplyWizard() {
                     />
                     {form1.formState.errors.phone && (
                       <p className="text-xs text-destructive">
-                        {(form1.formState.errors.phone as any).message}
+                        {
+                          (form1.formState.errors.phone as { message?: string })
+                            ?.message
+                        }
                       </p>
                     )}
                   </div>
@@ -388,8 +400,11 @@ export function ApplyWizard() {
                     {form2.formState.errors.yearsOfExperience && (
                       <p className="text-xs text-destructive">
                         {
-                          (form2.formState.errors.yearsOfExperience as any)
-                            .message
+                          (
+                            form2.formState.errors.yearsOfExperience as {
+                              message?: string;
+                            }
+                          )?.message
                         }
                       </p>
                     )}
@@ -447,7 +462,11 @@ export function ApplyWizard() {
                       <p className="text-xs text-destructive">
                         {Array.isArray(form2.formState.errors.skills)
                           ? "Please select at least one skill"
-                          : (form2.formState.errors.skills as any).message}
+                          : (
+                              form2.formState.errors.skills as {
+                                message?: string;
+                              }
+                            )?.message}
                       </p>
                     )}
 
@@ -465,6 +484,7 @@ export function ApplyWizard() {
                           >
                             {s}
                             <button
+                              title="Remove skill"
                               type="button"
                               onClick={() => removeSkill(s)}
                               className="text-muted-foreground hover:text-destructive p-0.5 rounded-full hover:bg-slate-100 transition-colors"
@@ -487,7 +507,13 @@ export function ApplyWizard() {
                     />
                     {form2.formState.errors.portfolioUrl && (
                       <p className="text-xs text-destructive">
-                        {(form2.formState.errors.portfolioUrl as any).message}
+                        {
+                          (
+                            form2.formState.errors.portfolioUrl as {
+                              message?: string;
+                            }
+                          )?.message
+                        }
                       </p>
                     )}
                   </div>
@@ -515,6 +541,7 @@ export function ApplyWizard() {
                 <CardContent>
                   <div className="flex flex-col items-center justify-center border-2 border-dashed rounded-xl p-10 bg-slate-50 dark:bg-slate-900 transition-colors hover:bg-slate-100 dark:hover:bg-slate-800 cursor-pointer relative">
                     <input
+                      title="Upload resume"
                       type="file"
                       id="resume"
                       className="absolute inset-0 opacity-0 cursor-pointer"

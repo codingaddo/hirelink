@@ -37,7 +37,8 @@ export function JobList() {
 
   // Reset to first page on search
   useEffect(() => {
-    if (currentPage !== 1) setCurrentPage(1);
+    const id = setTimeout(() => setCurrentPage(1), 0);
+    return () => clearTimeout(id);
   }, [searchTerm]);
 
   // Scroll to top when page changes

@@ -3,7 +3,7 @@ import { useStore } from "@/store/useStore";
 import { Layout } from "@/components/Layout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import type { Application, ApplicationStage } from "@/types";
+import type { Application, ApplicationStage, Job } from "@/types";
 import { Link, useNavigate } from "react-router-dom";
 import {
   Users,
@@ -55,7 +55,6 @@ import {
   useSensors,
   useDroppable,
   type DragStartEvent,
-  type DragOverEvent,
   type DragEndEvent,
 } from "@dnd-kit/core";
 import {
@@ -155,7 +154,13 @@ function DroppableColumn({
   );
 }
 
-function SortableApplicationCard({ app, job }: { app: Application; job: any }) {
+function SortableApplicationCard({
+  app,
+  job,
+}: {
+  app: Application;
+  job: Job | undefined;
+}) {
   const {
     attributes,
     listeners,
@@ -354,7 +359,7 @@ export function AdminPipeline() {
     setActiveId(event.active.id as string);
   };
 
-  const handleDragOver = (_event: DragOverEvent) => {
+  const handleDragOver = () => {
     // Stage update happens only on drop (handleDragEnd) so we can validate first.
   };
 
@@ -425,15 +430,6 @@ export function AdminPipeline() {
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full sm:w-auto">
               <div className="flex rounded-lg border bg-muted/30 p-0.5">
                 <Button
-                  variant={viewMode === "board" ? "secondary" : "ghost"}
-                  size="sm"
-                  className="rounded-md h-8 px-3"
-                  onClick={() => setViewMode("board")}
-                >
-                  <LayoutGrid className="h-4 w-4 sm:mr-1.5" />
-                  <span className="hidden sm:inline">Board</span>
-                </Button>
-                <Button
                   variant={viewMode === "table" ? "secondary" : "ghost"}
                   size="sm"
                   className="rounded-md h-8 px-3"
@@ -441,6 +437,15 @@ export function AdminPipeline() {
                 >
                   <List className="h-4 w-4 sm:mr-1.5" />
                   <span className="hidden sm:inline">Table</span>
+                </Button>
+                <Button
+                  variant={viewMode === "board" ? "secondary" : "ghost"}
+                  size="sm"
+                  className="rounded-md h-8 px-3"
+                  onClick={() => setViewMode("board")}
+                >
+                  <LayoutGrid className="h-4 w-4 sm:mr-1.5" />
+                  <span className="hidden sm:inline">Board</span>
                 </Button>
               </div>
               <div className="relative w-full sm:min-w-[200px] md:min-w-[240px]">

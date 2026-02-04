@@ -24,7 +24,8 @@ interface LayoutProps {
   isAdmin?: boolean;
 }
 
-export function Layout({ children, isAdmin: _isAdmin = false }: LayoutProps) {
+export function Layout({ children, isAdmin = false }: LayoutProps) {
+  void isAdmin; // accepted for API compatibility, highlight handled via location
   const { currentUser, setCurrentUser } = useStore();
   const navigate = useNavigate();
   const location = useLocation();

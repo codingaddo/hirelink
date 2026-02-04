@@ -89,18 +89,24 @@ export function AdminCandidate() {
   const job = jobs.find((j) => j.id === application?.jobId);
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     if (!isHydrated) {
       hydrate();
-    } else if (application) {
-      if (score !== (application.score || 0)) setScore(application.score || 0);
-      if (notes !== (application.notes || ""))
-        setNotes(application.notes || "");
-      if (application.interviewAt) {
-        const date = new Date(application.interviewAt);
-        if (interviewDate?.getTime() !== date.getTime()) setInterviewDate(date);
-      }
+      return;
     }
-    window.scrollTo(0, 0);
+    if (application) {
+      const nextScore = application.score ?? 0;
+      const nextNotes = application.notes ?? "";
+      const nextDate = application.interviewAt
+        ? new Date(application.interviewAt)
+        : undefined;
+      const id = setTimeout(() => {
+        setScore(nextScore);
+        setNotes(nextNotes);
+        setInterviewDate(nextDate);
+      }, 0);
+      return () => clearTimeout(id);
+    }
   }, [isHydrated, hydrate, application]);
 
   useEffect(() => {
