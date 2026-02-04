@@ -82,6 +82,7 @@ const STAGE_ORDER: Record<ApplicationStage, number> = {
 };
 
 const PENDING_STAGE_KEY = "hirelink_pending_stage";
+const PIPELINE_VIEW_KEY = "hirelink_pipeline_view";
 
 function canMoveToStage(
   app: Application,
@@ -260,7 +261,9 @@ export function AdminPipeline() {
     useStore();
   const [searchTerm, setSearchTerm] = useState("");
   const [activeId, setActiveId] = useState<string | null>(null);
-  const [viewMode, setViewMode] = useState<ViewMode>("table");
+  const [viewMode, setViewMode] = useState<ViewMode>(() =>
+    sessionStorage.getItem(PIPELINE_VIEW_KEY) === "board" ? "board" : "table"
+  );
   const [stageFilter, setStageFilter] = useState<ApplicationStage | "all">(
     "all"
   );
@@ -284,6 +287,10 @@ export function AdminPipeline() {
     }
     window.scrollTo(0, 0);
   }, [isHydrated, hydrate]);
+
+  useEffect(() => {
+    sessionStorage.setItem(PIPELINE_VIEW_KEY, viewMode);
+  }, [viewMode]);
 
   const filteredApps = applications.filter((app) => {
     const job = jobs.find((j) => j.id === app.jobId);
