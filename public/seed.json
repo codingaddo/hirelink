@@ -1,0 +1,108 @@
+{
+  "users": [
+    {
+      "email": "recruiter@hirelink.com",
+      "password": "password123",
+      "name": "Jane Recruiter"
+    }
+  ],
+  "jobs": [
+    {
+      "id": "job_1",
+      "title": "Frontend Engineer",
+      "location": "Accra, Ghana (Remote)",
+      "description": "We are looking for a React specialist to build modern UIs.",
+      "type": "Full-time",
+      "createdAt": "2026-02-01T10:00:00Z"
+    },
+    {
+      "id": "job_2",
+      "title": "Fullstack Developer",
+      "location": "Lagos, Nigeria (Hybrid)",
+      "description": "Join our team to work on Node.js and React applications.",
+      "type": "Contract",
+      "createdAt": "2026-02-02T12:00:00Z"
+    },
+    {
+      "id": "job_3",
+      "title": "Product Designer",
+      "location": "London, UK",
+      "description": "Help us shape the future of recruitment platforms.",
+      "type": "Full-time",
+      "createdAt": "2026-02-03T09:00:00Z"
+    },
+    {
+      "id": "job_4",
+      "title": "Backend Architect",
+      "location": "San Francisco, USA (Remote)",
+      "description": "Design and scale our core services using Go and PostgreSQL.",
+      "type": "Full-time",
+      "createdAt": "2026-02-04T08:00:00Z"
+    },
+    {
+      "id": "job_5",
+      "title": "Mobile App Developer",
+      "location": "Nairobi, Kenya",
+      "description": "Build high-performance React Native apps for our global users.",
+      "type": "Full-time",
+      "createdAt": "2026-02-04T11:30:00Z"
+    },
+    {
+      "id": "job_6",
+      "title": "DevOps Engineer",
+      "location": "Berlin, Germany (Hybrid)",
+      "description": "Automate everything and manage our cloud infrastructure on AWS.",
+      "type": "Full-time",
+      "createdAt": "2026-02-05T14:20:00Z"
+    },
+    {
+      "id": "job_7",
+      "title": "QA Automation Engineer",
+      "location": "Toronto, Canada",
+      "description": "Ensure the quality of our applications with Playwright and Jest.",
+      "type": "Contract",
+      "createdAt": "2026-02-06T09:15:00Z"
+    },
+    {
+      "id": "job_8",
+      "title": "Product Manager",
+      "location": "New York, USA (Remote)",
+      "description": "Lead the product vision and work closely with engineering teams.",
+      "type": "Full-time",
+      "createdAt": "2026-02-07T16:45:00Z"
+    },
+    {
+      "id": "job_9",
+      "title": "Data Scientist",
+      "location": "Paris, France",
+      "description": "Extract insights from our recruitment data to improve the platform.",
+      "type": "Full-time",
+      "createdAt": "2026-02-08T10:00:00Z"
+    },
+    {
+      "id": "job_10",
+      "title": "Cybersecurity Specialist",
+      "location": "Tokyo, Japan (Hybrid)",
+      "description": "Protect our infrastructure and user data from evolving threats.",
+      "type": "Full-time",
+      "createdAt": "2026-02-09T13:10:00Z"
+    },
+    {
+      "id": "job_11",
+      "title": "Technical Writer",
+      "location": "Remote",
+      "description": "Create clear and concise documentation for our API and platform.",
+      "type": "Part-time",
+      "createdAt": "2026-02-10T11:00:00Z"
+    },
+    {
+      "id": "job_12",
+      "title": "Customer Success Manager",
+      "location": "Sydney, Australia",
+      "description": "Help our clients get the most out of the HireLink platform.",
+      "type": "Full-time",
+      "createdAt": "2026-02-11T09:30:00Z"
+    }
+  ],
+  "applications": []
+}

@@ -1,73 +1,73 @@
-# React + TypeScript + Vite
+# HireLink - Frontend Recruitment Platform
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+HireLink is a frontend-only recruitment platform built with React, Vite, and shadcn/ui. It manages the end-to-end hiring journey from candidate application to recruiter decision-making.
 
-Currently, two official plugins are available:
+## 🚀 Getting Started
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+1. **Install dependencies:**
 
-## React Compiler
+   ```bash
+   npm install
+   ```
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+2. **Run the development server:**
 
-## Expanding the ESLint configuration
+   ```bash
+   npm run dev
+   ```
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+3. **Access the application:**
+   - Public Job Listings: `http://localhost:5173/`
+   - Recruiter Login: `http://localhost:5173/login`
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## 🔐 Recruiter Credentials
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+- **Email:** `recruiter@hirelink.com`
+- **Password:** `password123`
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## ✨ Features
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### Candidate Flow
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+- **Job Listings:** Browse open roles with details like location and type.
+- **Multi-Step Application:**
+  - Personal Information
+  - Experience & Skills (with interactive tagging)
+  - Resume Upload (metadata tracking)
+- **Unique Application ID:** Generated upon submission.
+- **Thank You Page:** Confirmation with ID copying functionality.
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+### Recruiter Flow (Admin)
+
+- **Protected Routes:** Access controlled by local session.
+- **Pipeline Board:** Kanban-style board with **Drag & Drop** functionality to move candidates between stages:
+  - Applied → Reviewed → Interview Scheduled → Offer Sent
+- **Job Management:** Full CRUD operations for job listings.
+- **Candidate Review:**
+  - View full profiles and skills.
+  - Rate candidates (1-5 stars) and add private notes.
+  - Schedule interviews with auto-stage updates.
+  - Generate mock offer letters and initiate email (mailto).
+
+## 🛠️ Tech Stack
+
+- **Framework:** React 19 + Vite
+- **Styling:** Tailwind CSS + shadcn/ui
+- **State Management:** Zustand
+- **Animations:** Framer Motion
+- **Forms & Validation:** React Hook Form + Zod
+- **Drag & Drop:** @dnd-kit
+- **Utilities:** date-fns, lucide-react
+
+## 📂 Persistence Strategy
+
+- **Mock Backend:** `public/seed.json` provides initial data.
+- **LocalStorage:** All changes (Job CRUD, applications, stage transitions) are persisted in `localStorage` to survive page refreshes.
+- **File Handling:** Resume metadata is stored locally (no large base64 strings) for efficiency.
+
+## 🎨 Design Decisions
+
+- **Responsive Design:** Mobile-first approach using Tailwind's responsive grid.
+- **Branding:** Professional Navy Blue primary color palette.
+- **UX:** Smooth transitions with Framer Motion and accessible components from shadcn/ui.
+- **Simplicity:** Clean, focused interfaces for both candidates and recruiters.
