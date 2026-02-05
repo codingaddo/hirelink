@@ -39,7 +39,7 @@ Admin routes are protected. Use these credentials (from seed data):
 | **Email**    | `recruiter@hirelink.com` |
 | **Password** | `password123`            |
 
-Logged-in user in seed: **Jane Recruiter**.
+Logged-in user in seed: **Michael Addo**.
 
 ---
 
