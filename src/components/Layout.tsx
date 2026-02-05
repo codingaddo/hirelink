@@ -7,7 +7,7 @@ import {
   LayoutDashboard,
   Briefcase,
   User,
-  Settings,
+  // Settings,
   ChevronDown,
 } from "lucide-react";
 import {
@@ -40,7 +40,7 @@ export function Layout({ children, isAdmin = false }: LayoutProps) {
   return (
     <div className="min-h-screen bg-background font-sans antialiased">
       <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60">
-        <div className="container flex h-16 items-center justify-between px-4 md:px-8">
+        <div className="flex h-16 w-full items-center justify-between px-4 md:px-8 lg:px-12">
           <Link to="/" className="flex items-center space-x-2">
             <div className="rounded-lg bg-primary p-1.5 text-primary-foreground shadow-lg shadow-primary/20">
               <Briefcase className="h-6 w-6" />
@@ -99,10 +99,10 @@ export function Layout({ children, isAdmin = false }: LayoutProps) {
                         <span>Profile</span>
                       </Link>
                     </DropdownMenuItem>
-                    <DropdownMenuItem className="cursor-pointer">
+                    {/* <DropdownMenuItem className="cursor-pointer">
                       <Settings className="mr-2 h-4 w-4" />
                       <span>Settings</span>
-                    </DropdownMenuItem>
+                    </DropdownMenuItem> */}
                     <DropdownMenuSeparator />
                     <DropdownMenuItem
                       className="text-destructive focus:text-destructive cursor-pointer"
@@ -121,7 +121,7 @@ export function Layout({ children, isAdmin = false }: LayoutProps) {
                 size="sm"
                 className="rounded-full"
               >
-                <Link to="/login">Recruiter Login</Link>
+                <Link to="/login">Login</Link>
               </Button>
             )}
           </nav>

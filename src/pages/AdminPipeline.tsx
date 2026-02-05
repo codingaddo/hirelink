@@ -235,7 +235,7 @@ function SortableApplicationCard({
           <div className="flex items-center justify-between pt-2 border-t mt-2">
             <div className="flex items-center text-[10px] text-muted-foreground">
               <Calendar className="mr-1 h-3 w-3" />
-              {format(new Date(app.createdAt), "MMM d, yyyy")}
+              {format(new Date(app.createdAt), "MMM d, yyyy 'at' HH:mm")}
             </div>
             {app.score !== undefined && (
               <div className="flex items-center gap-0.5">
@@ -299,7 +299,9 @@ export function AdminPipeline() {
 
   const filteredApps = applications.filter((app) => {
     const job = jobs.find((j) => j.id === app.jobId);
-    const searchStr = `${app.candidateName} ${job?.title ?? ""}`.toLowerCase();
+    const searchStr = `${app.id} ${app.candidateName} ${
+      job?.title ?? ""
+    }`.toLowerCase();
     return searchStr.includes(searchTerm.toLowerCase());
   });
 
@@ -430,18 +432,26 @@ export function AdminPipeline() {
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full sm:w-auto">
               <div className="flex rounded-lg border bg-muted/30 p-0.5">
                 <Button
-                  variant={viewMode === "table" ? "secondary" : "ghost"}
+                  variant="ghost"
                   size="sm"
-                  className="rounded-md h-8 px-3"
+                  className={cn(
+                    "rounded-md h-8 px-3",
+                    viewMode === "table" &&
+                      "bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground"
+                  )}
                   onClick={() => setViewMode("table")}
                 >
                   <List className="h-4 w-4 sm:mr-1.5" />
                   <span className="hidden sm:inline">Table</span>
                 </Button>
                 <Button
-                  variant={viewMode === "board" ? "secondary" : "ghost"}
+                  variant="ghost"
                   size="sm"
-                  className="rounded-md h-8 px-3"
+                  className={cn(
+                    "rounded-md h-8 px-3",
+                    viewMode === "board" &&
+                      "bg-primary text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground"
+                  )}
                   onClick={() => setViewMode("board")}
                 >
                   <LayoutGrid className="h-4 w-4 sm:mr-1.5" />
@@ -451,7 +461,7 @@ export function AdminPipeline() {
               <div className="relative w-full sm:min-w-[200px] md:min-w-[240px]">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                 <Input
-                  placeholder="Search candidates or jobs..."
+                  placeholder="Search by application ID, candidate, or job..."
                   className="pl-9 h-10 sm:h-9"
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
@@ -465,7 +475,9 @@ export function AdminPipeline() {
           <div className="flex-1 min-h-0 min-w-0 overflow-auto bg-slate-50 dark:bg-slate-950 p-3 sm:p-4 md:p-6 lg:p-8">
             <div className="space-y-4">
               <div className="flex flex-wrap items-center gap-2">
-                <span className="text-sm text-muted-foreground">Stage:</span>
+                <span className="text-sm text-muted-foreground sr-only">
+                  Stage:
+                </span>
                 <Select
                   value={stageFilter}
                   onValueChange={(v) =>
@@ -484,7 +496,7 @@ export function AdminPipeline() {
                     ))}
                   </SelectContent>
                 </Select>
-                <span className="text-sm text-muted-foreground ml-2">
+                <span className="text-base text-muted-foreground ml-2">
                   {sortedApps.length} candidate
                   {sortedApps.length !== 1 ? "s" : ""}
                 </span>
@@ -631,7 +643,7 @@ export function AdminPipeline() {
                               </Badge>
                             </TableCell>
                             <TableCell className="text-muted-foreground text-xs">
-                              {format(new Date(app.createdAt), "MMM d, yyyy")}
+                              {format(new Date(app.createdAt), "MMM d, yyyy 'at' HH:mm")}
                             </TableCell>
                             <TableCell>
                               {app.score !== undefined ? (
@@ -735,7 +747,7 @@ export function AdminPipeline() {
                       <div className="flex items-center justify-between pt-2 border-t mt-2">
                         <div className="flex items-center text-[10px] text-muted-foreground">
                           <Calendar className="mr-1 h-3 w-3" />
-                          {format(new Date(activeApp.createdAt), "MMM d, yyyy")}
+                          {format(new Date(activeApp.createdAt), "MMM d, yyyy 'at' HH:mm")}
                         </div>
                       </div>
                     </CardContent>

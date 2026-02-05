@@ -30,6 +30,8 @@ export type Application = {
   skills: string[];
   portfolioUrl?: string;
   resumeMeta: ResumeMeta;
+  /** Base64 data URL or base64 string for in-memory resume preview (same session/device) */
+  resumeData?: string;
   stage: ApplicationStage;
   score?: number;
   notes?: string;

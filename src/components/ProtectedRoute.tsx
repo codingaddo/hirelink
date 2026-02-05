@@ -31,7 +31,7 @@ export function ProtectedRoute({ children }: ProtectedRouteProps) {
     return (
       <div className="flex min-h-screen items-center justify-center">
         <p className="animate-pulse text-muted-foreground">
-          Verifying session...
+          Verifying user session...
         </p>
       </div>
     );

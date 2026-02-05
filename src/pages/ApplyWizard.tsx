@@ -45,17 +45,39 @@ import {
 } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 
+// Character limits (spec: validation includes character limits)
+const LIMITS = {
+  name: 100,
+  email: 254,
+  phone: 20,
+  portfolioUrl: 2048,
+} as const;
+
 // Validation Schemas
 const step1Schema = z.object({
-  candidateName: z.string().min(2, "Name must be at least 2 characters"),
-  email: z.string().email("Invalid email address"),
-  phone: z.string().min(8, "Invalid phone number"),
+  candidateName: z
+    .string()
+    .min(2, "Name must be at least 2 characters")
+    .max(LIMITS.name, `Name must be ${LIMITS.name} characters or fewer`),
+  email: z
+    .string()
+    .email("Invalid email address")
+    .max(LIMITS.email, `Email must be ${LIMITS.email} characters or fewer`),
+  phone: z
+    .string()
+    .min(8, "Invalid phone number")
+    .max(LIMITS.phone, `Phone must be ${LIMITS.phone} characters or fewer`),
 });
 
 const step2Schema = z.object({
   yearsOfExperience: z.number().min(0, "Years must be 0 or more"),
   skills: z.array(z.string()).min(1, "Add at least one skill"),
-  portfolioUrl: z.string().url("Invalid URL").optional().or(z.literal("")),
+  portfolioUrl: z
+    .union([
+      z.string().url("Invalid URL").max(LIMITS.portfolioUrl),
+      z.literal(""),
+    ])
+    .optional(),
 });
 
 const COMMON_SKILLS = [
@@ -128,6 +150,7 @@ export function ApplyWizard() {
   const [step, setStep] = useState(1);
   const [skills, setSkills] = useState<string[]>([]);
   const [resumeFile, setResumeFile] = useState<File | null>(null);
+  const [resumeError, setResumeError] = useState<string | null>(null);
   const [open, setOpen] = useState(false);
 
   const job = jobs.find((j) => j.id === jobId);
@@ -201,15 +224,40 @@ export function ApplyWizard() {
     form2.setValue("skills", newSkills, { shouldValidate: true });
   };
 
+  const ALLOWED_RESUME_TYPES = [
+    "application/pdf",
+    "application/msword", // .doc
+    "application/vnd.openxmlformats-officedocument.wordprocessingml.document", // .docx
+  ];
+  const ALLOWED_RESUME_EXT = [".pdf", ".doc", ".docx"];
+
+  const isResumeFileValid = (file: File): boolean => {
+    const ext = "." + file.name.split(".").pop()?.toLowerCase();
+    const typeOk =
+      ALLOWED_RESUME_TYPES.includes(file.type) ||
+      ALLOWED_RESUME_EXT.includes(ext);
+    return typeOk;
+  };
+
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
+    setResumeError(null);
     if (file) {
+      if (!isResumeFileValid(file)) {
+        setResumeError(
+          "Please upload a PDF or DOC/DOCX file only. CSV and other formats are not accepted."
+        );
+        e.target.value = "";
+        return;
+      }
       if (file.size > 5 * 1024 * 1024) {
-        alert("File too large. Max 5MB.");
+        setResumeError("File too large. Maximum size is 5MB.");
+        e.target.value = "";
         return;
       }
       setResumeFile(file);
     }
+    e.target.value = "";
   };
 
   const onSubmit = () => {
@@ -219,26 +267,31 @@ export function ApplyWizard() {
     const data1 = form1.getValues();
     const data2 = form2.getValues();
 
-    addApplication({
-      id: appId,
-      jobId: job.id,
-      candidateName: data1.candidateName,
-      email: data1.email,
-      phone: data1.phone,
-      yearsOfExperience: data2.yearsOfExperience,
-      skills: skills,
-      portfolioUrl: data2.portfolioUrl,
-      resumeMeta: {
-        fileName: resumeFile.name,
-        type: resumeFile.type,
-        size: resumeFile.size,
-        lastModified: resumeFile.lastModified,
-      },
-      stage: "Applied",
-      createdAt: new Date().toISOString(),
-    });
-
-    navigate(`/thanks/${appId}`);
+    const reader = new FileReader();
+    reader.onload = () => {
+      const base64 = typeof reader.result === "string" ? reader.result : null;
+      addApplication({
+        id: appId,
+        jobId: job.id,
+        candidateName: data1.candidateName,
+        email: data1.email,
+        phone: data1.phone,
+        yearsOfExperience: data2.yearsOfExperience,
+        skills: skills,
+        portfolioUrl: data2.portfolioUrl,
+        resumeMeta: {
+          fileName: resumeFile.name,
+          type: resumeFile.type,
+          size: resumeFile.size,
+          lastModified: resumeFile.lastModified,
+        },
+        resumeData: base64 ?? undefined,
+        stage: "Applied",
+        createdAt: new Date().toISOString(),
+      });
+      navigate(`/thanks/${appId}`);
+    };
+    reader.readAsDataURL(resumeFile);
   };
 
   return (
@@ -319,6 +372,7 @@ export function ApplyWizard() {
                       id="candidateName"
                       {...form1.register("candidateName")}
                       placeholder="John Doe"
+                      maxLength={LIMITS.name}
                     />
                     {form1.formState.errors.candidateName && (
                       <p className="text-xs text-destructive">
@@ -339,6 +393,7 @@ export function ApplyWizard() {
                       type="email"
                       {...form1.register("email")}
                       placeholder="john@example.com"
+                      maxLength={LIMITS.email}
                     />
                     {form1.formState.errors.email && (
                       <p className="text-xs text-destructive">
@@ -355,6 +410,7 @@ export function ApplyWizard() {
                       id="phone"
                       {...form1.register("phone")}
                       placeholder="+233..."
+                      maxLength={LIMITS.phone}
                     />
                     {form1.formState.errors.phone && (
                       <p className="text-xs text-destructive">
@@ -504,6 +560,7 @@ export function ApplyWizard() {
                       id="portfolio"
                       {...form2.register("portfolioUrl")}
                       placeholder="https://..."
+                      maxLength={LIMITS.portfolioUrl}
                     />
                     {form2.formState.errors.portfolioUrl && (
                       <p className="text-xs text-destructive">
@@ -553,7 +610,10 @@ export function ApplyWizard() {
                         <Upload className="h-8 w-8 text-primary" />
                       </div>
                       {resumeFile ? (
-                        <div className="space-y-1">
+                        <div
+                          className="relative z-10 space-y-1"
+                          onClick={(e) => e.stopPropagation()}
+                        >
                           <p className="font-medium text-primary">
                             {resumeFile.name}
                           </p>
@@ -561,12 +621,13 @@ export function ApplyWizard() {
                             {(resumeFile.size / 1024 / 1024).toFixed(2)} MB
                           </p>
                           <Button
+                            type="button"
                             variant="link"
                             size="sm"
                             className="text-destructive h-auto p-0"
-                            onClick={(e) => {
-                              e.preventDefault();
+                            onClick={() => {
                               setResumeFile(null);
+                              setResumeError(null);
                             }}
                           >
                             Remove
@@ -584,6 +645,11 @@ export function ApplyWizard() {
                       )}
                     </div>
                   </div>
+                  {resumeError && (
+                    <p className="mt-3 text-sm text-destructive" role="alert">
+                      {resumeError}
+                    </p>
+                  )}
                 </CardContent>
               </motion.div>
             )}
@@ -596,13 +662,13 @@ export function ApplyWizard() {
               disabled={step === 1}
               className={step === 1 ? "invisible" : ""}
             >
-              <ArrowLeft className="mr-2 h-4 w-4" />
+              <ArrowLeft className="h-4 w-4" />
               Back
             </Button>
             {step < 3 ? (
               <Button onClick={nextStep}>
                 Next Step
-                <ArrowRight className="ml-2 h-4 w-4" />
+                <ArrowRight className="h-4 w-4" />
               </Button>
             ) : (
               <Button
@@ -610,8 +676,8 @@ export function ApplyWizard() {
                 disabled={!resumeFile}
                 className="bg-primary hover:bg-primary/90"
               >
-                Submit Application
-                <CheckCircle2 className="ml-2 h-4 w-4" />
+                Submit
+                <CheckCircle2 className=" h-4 w-4" />
               </Button>
             )}
           </CardFooter>

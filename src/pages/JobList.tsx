@@ -74,7 +74,7 @@ export function JobList() {
       <section className="bg-slate-50 py-12 md:py-20 dark:bg-slate-900">
         <div className="container mx-auto px-4 md:px-8">
           <div className="max-w-2xl">
-            <h1 className="text-4xl font-extrabold tracking-tight lg:text-5xl">
+            <h1 className="text-4xl capitalize font-extrabold tracking-tight lg:text-5xl">
               Find your next <span className="text-primary">career move</span>
             </h1>
             <p className="mt-4 text-xl text-muted-foreground">
